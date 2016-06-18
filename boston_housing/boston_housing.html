@@ -2205,8 +2205,8 @@ Because the performance on testing set is highest when max-depth = 3 and the gap
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> In k-fold cross validation the dataset is divided into k equal parts. And every time during training of the model , 1 part is chosen as testing set and other k-1 parts are chosen as training sets. This process is repeated k times so that every part is once chosen as a testing set.
-The benefit of such a technique is that every part out of k-parts plays equal role leading to the trained model.
+<p><strong>Answer: </strong> In k-fold cross validation the dataset is divided into k equal parts. And every time during training of the model , 1 part is chosen as testing set and other k-1 parts are chosen as training sets.The cross-validation process is then repeated k times (the folds), with each of the k parts used exactly once as the validation data. The k results from the folds can then be averaged to produce a single estimation.
+The benefit of such a technique is that every part out of k-parts plays equal role leading to a more accurate estimate of model prediction performance.
 Grid search also uses cross validation but in this case we are trying different combinations of parameter values for training model instead of chosing different datasets.</p>
 
 </div>
@@ -2427,7 +2427,10 @@ Predicted selling price for Client 3&apos;s home: $976,800.00
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>  I would recommend the prices predicted by my training model.
-Yes the prices for houses seem very reasonable according to their respected features.</p>
+The prices for houses seem very reasonable according to their respected features.
+Comparing with the statistics, clearly all the predicted prices lie b/w the max. and min. prices for our existing data.
+Also as the home of Client 3 has 8 rooms, low student-to-teacher ration and net worth percentage , so it is expected to have very high price whick justified by our prediction.</p>
+<p>Also, we can look at the training data and compare the predicted prices with the prices of the homes with closely matching features in the training data to get a rough guess of whether or not our predictions are accurate enough or not.</p>
 
 </div>
 </div>
