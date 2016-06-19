@@ -2131,9 +2131,8 @@ WyupA54AAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong> Higher the max-depth, higher will be the complexity and variance as model will tend to overfit on traininig data.
-So max-depth = 1 indicates high bias and max-depth indicates high variance.
-Visual Cues : The gap between training curve and testing cuve is a measure of variance(overfitting) of the model. And as we can see the gap is widening with increase in depth.
-For high bias we can see that the model performs poorly on both the training sets and testings sets at max-depth = 1. Also the performance on both training and testing set is nearly the same.</p>
+Visual Cues : The gap between training curve and testing cuve is a measure of variance(overfitting) of the model. And as we can see the gap is widening with increase in depth. So max-depth = 10 indicates high varaince.
+Now at max-depth = 1 the training and testing errors converge and are quite high this means the model is biased. No matter how much data we feed it, the model cannot represent the underlying relationship and therefore has systematic high errors.</p>
 
 </div>
 </div>
