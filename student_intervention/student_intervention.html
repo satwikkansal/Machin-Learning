@@ -231,7 +231,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Import libraries</span>
@@ -284,14 +284,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Calculate number of students</span>
 <span class="n">n_students</span> <span class="o">=</span> <span class="n">student_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># TODO: Calculate number of features</span>
-<span class="n">n_features</span> <span class="o">=</span> <span class="n">student_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">student_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="c1"># TODO: Calculate passing students</span>
 <span class="n">n_passed</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">student_data</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">s</span><span class="o">==</span><span class="s1">&#39;yes&#39;</span><span class="p">])</span> 
@@ -322,7 +322,7 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Total number of students: 395
-Number of features: 31
+Number of features: 30
 Number of students who passed: 265
 Number of students who failed: 130
 Graduation rate of the class: 67.09%
@@ -348,7 +348,7 @@ Graduation rate of the class: 67.09%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Extract feature columns</span>
@@ -433,7 +433,9 @@ Feature values:
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_features</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="k">def</span> <span class="nf">preprocess_features</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Preprocesses the student data and converts non-numeric binary variables into</span>
 <span class="sd">        binary (0/1) variables. Converts categorical variables into dummy variables. &#39;&#39;&#39;</span>
     
@@ -464,6 +466,9 @@ Feature values:
 
 <span class="n">X_all</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">X_all</span><span class="p">)</span>
 <span class="k">print</span> <span class="s2">&quot;Processed feature columns ({} total features):</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+
+<span class="c1">#Scaling the features</span>
+<span class="n">X_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">X_all</span><span class="p">),</span> <span class="n">index</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -519,7 +524,7 @@ Feature values:
 <span class="n">num_test</span> <span class="o">=</span> <span class="n">X_all</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">num_train</span>
 
 <span class="c1"># TODO: Shuffle and split the dataset into the number of training and testing points above</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">num_test</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">num_test</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span> <span class="n">y_all</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Show the results of the split</span>
 <span class="k">print</span> <span class="s2">&quot;Training set has {} samples.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -576,7 +581,7 @@ Testing set has 95 samples.
 <p>Strengths : Logistic regression is intrinsically simple, it has low variance and so is less prone to over-fitting.</p>
 <p>Weaknesses : Logistic regression will work better if there's a single decision boundary, not necessarily parallel to the axis.</p>
 <p><strong>Learning Model #2  : AdaBoostClassifier  </strong> 
-General Applications : AdaBoost is boosting algorithm which combines weak learners to produce a learner with high accuracy. Adaboost can use multiple instances of the same classifier with different parameters. Thus, a previously linear classifier can be combined into nonlinear classifiers.</p>
+General Applications :  Adaboost can use multiple instances of the same classifier with different parameters. Thus, a previously linear classifier can be combined into nonlinear classifiers. It can be used in face detection in images, player detection in sports, text-categorization, human-computer spoken dialogue.</p>
 <p>Strengths : Computationally efficient, no difficult parameters to set, versatile and  a wide range of base learners can be used with AdaBoost.</p>
 <p>Weaknesses : Algorithm seems susceptible to uniform noise. Weak learner should not be too complexto avoid overfitting. There needs to be enough data so that the weak learning
 requirement is satisfied .The base learner should perform consistently better than random guessing, with generalization error &lt; 0.5 for binary classification problems.</p>
@@ -584,8 +589,8 @@ requirement is satisfied .The base learner should perform consistently better th
 <p>General Applications : Classification of images, Handwriting recognition, text and hypertext categorization.</p>
 <p>Strengths : Safe from overfitting, Can capture complex decision boundary, Quick to train and evaluate. It uses the kernel trick, so you can build in expert knowledge about the problem via engineering the kernel</p>
 <p>Difficulties : Choice of kernel, Tuning of parameters</p>
-<p><strong>Reason to choose</strong> 
-Possiblities</p>
+<p><strong>Reason to choose</strong></p>
+<p>Possiblities</p>
 
 <pre><code>K-nearest neighbors (KNN)
 Logistic regression
@@ -755,59 +760,59 @@ Another algorithm that could be useful here is SVM. As the number of features ar
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Training a LogisticRegressionCV using a training set size of 100. . .
-Trained model in 0.6861 seconds
-Made predictions in 0.0005 seconds.
-F1 score for training set: 0.7805.
-Made predictions in 0.0003 seconds.
-F1 score for test set: 0.7662.
+Trained model in 0.2621 seconds
+Made predictions in 0.0002 seconds.
+F1 score for training set: 0.7952.
+Made predictions in 0.0002 seconds.
+F1 score for test set: 0.8050.
 Training a LogisticRegressionCV using a training set size of 200. . .
-Trained model in 0.4037 seconds
-Made predictions in 0.0004 seconds.
-F1 score for training set: 0.8208.
+Trained model in 0.1180 seconds
 Made predictions in 0.0002 seconds.
-F1 score for test set: 0.7832.
+F1 score for training set: 0.8344.
+Made predictions in 0.0001 seconds.
+F1 score for test set: 0.8054.
 Training a LogisticRegressionCV using a training set size of 300. . .
-Trained model in 0.3954 seconds
-Made predictions in 0.0004 seconds.
-F1 score for training set: 0.8238.
+Trained model in 0.1128 seconds
+Made predictions in 0.0003 seconds.
+F1 score for training set: 0.8172.
 Made predictions in 0.0002 seconds.
-F1 score for test set: 0.7746.
+F1 score for test set: 0.7974.
 Training a AdaBoostClassifier using a training set size of 100. . .
-Trained model in 0.1347 seconds
-Made predictions in 0.0076 seconds.
-F1 score for training set: 0.9538.
-Made predictions in 0.0075 seconds.
-F1 score for test set: 0.7200.
+Trained model in 0.1652 seconds
+Made predictions in 0.0061 seconds.
+F1 score for training set: 0.9778.
+Made predictions in 0.0061 seconds.
+F1 score for test set: 0.7424.
 Training a AdaBoostClassifier using a training set size of 200. . .
-Trained model in 0.1554 seconds
-Made predictions in 0.0075 seconds.
-F1 score for training set: 0.8826.
-Made predictions in 0.0049 seconds.
-F1 score for test set: 0.8058.
-Training a AdaBoostClassifier using a training set size of 300. . .
 Trained model in 0.1334 seconds
-Made predictions in 0.0086 seconds.
-F1 score for training set: 0.8688.
-Made predictions in 0.0044 seconds.
-F1 score for test set: 0.7794.
-Training a SVC using a training set size of 100. . .
-Trained model in 0.0015 seconds
-Made predictions in 0.0009 seconds.
-F1 score for training set: 0.8591.
-Made predictions in 0.0008 seconds.
-F1 score for test set: 0.7838.
-Training a SVC using a training set size of 200. . .
-Trained model in 0.0039 seconds
-Made predictions in 0.0028 seconds.
-F1 score for training set: 0.8693.
-Made predictions in 0.0014 seconds.
-F1 score for test set: 0.7755.
-Training a SVC using a training set size of 300. . .
-Trained model in 0.0080 seconds
 Made predictions in 0.0058 seconds.
-F1 score for training set: 0.8692.
-Made predictions in 0.0020 seconds.
-F1 score for test set: 0.7586.
+F1 score for training set: 0.8897.
+Made predictions in 0.0047 seconds.
+F1 score for test set: 0.7164.
+Training a AdaBoostClassifier using a training set size of 300. . .
+Trained model in 0.0904 seconds
+Made predictions in 0.0058 seconds.
+F1 score for training set: 0.8794.
+Made predictions in 0.0043 seconds.
+F1 score for test set: 0.7407.
+Training a SVC using a training set size of 100. . .
+Trained model in 0.0014 seconds
+Made predictions in 0.0009 seconds.
+F1 score for training set: 0.9362.
+Made predictions in 0.0009 seconds.
+F1 score for test set: 0.8105.
+Training a SVC using a training set size of 200. . .
+Trained model in 0.0041 seconds
+Made predictions in 0.0030 seconds.
+F1 score for training set: 0.9030.
+Made predictions in 0.0015 seconds.
+F1 score for test set: 0.8079.
+Training a SVC using a training set size of 300. . .
+Trained model in 0.0087 seconds
+Made predictions in 0.0065 seconds.
+F1 score for training set: 0.9054.
+Made predictions in 0.0022 seconds.
+F1 score for test set: 0.8054.
 </pre>
 </div>
 </div>
@@ -844,24 +849,24 @@ F1 score for test set: 0.7586.
 <tbody>
 <tr>
 <td style="text-align:center">100</td>
-<td style="text-align:center">0.7616</td>
-<td style="text-align:center">0.004</td>
-<td style="text-align:center">0.7805</td>
-<td style="text-align:center">0.7662</td>
+<td style="text-align:center">0.2621</td>
+<td style="text-align:center">0.0002</td>
+<td style="text-align:center">0.7952</td>
+<td style="text-align:center">0.8050</td>
 </tr>
 <tr>
 <td style="text-align:center">200</td>
-<td style="text-align:center">0.4002</td>
-<td style="text-align:center">0.0002</td>
-<td style="text-align:center">0.8208</td>
-<td style="text-align:center">0.7832</td>
+<td style="text-align:center">0.1180</td>
+<td style="text-align:center">0.0001</td>
+<td style="text-align:center">0.8344</td>
+<td style="text-align:center">0.8054</td>
 </tr>
 <tr>
 <td style="text-align:center">300</td>
-<td style="text-align:center">0.3911</td>
-<td style="text-align:center">.0003</td>
-<td style="text-align:center">0.8238</td>
-<td style="text-align:center">0.7746</td>
+<td style="text-align:center">0.1128</td>
+<td style="text-align:center">.0002</td>
+<td style="text-align:center">0.8172</td>
+<td style="text-align:center">0.7970</td>
 </tr>
 </tbody>
 </table>
@@ -879,23 +884,23 @@ F1 score for test set: 0.7586.
 <tr>
 <td style="text-align:center">100</td>
 <td style="text-align:center">0.0014</td>
-<td style="text-align:center">0.0010</td>
-<td style="text-align:center">0.8391</td>
-<td style="text-align:center">0.7838</td>
+<td style="text-align:center">0.0009</td>
+<td style="text-align:center">0.9362</td>
+<td style="text-align:center">0.8125</td>
 </tr>
 <tr>
 <td style="text-align:center">200</td>
-<td style="text-align:center">0.0039</td>
-<td style="text-align:center">0.0028</td>
-<td style="text-align:center">0.8693</td>
-<td style="text-align:center">0.7755</td>
+<td style="text-align:center">0.0041</td>
+<td style="text-align:center">0.0015</td>
+<td style="text-align:center">0.9030</td>
+<td style="text-align:center">0.8079</td>
 </tr>
 <tr>
 <td style="text-align:center">300</td>
-<td style="text-align:center">0.0100</td>
-<td style="text-align:center">0.0029</td>
-<td style="text-align:center">0.8692</td>
-<td style="text-align:center">0.7568</td>
+<td style="text-align:center">0.0087</td>
+<td style="text-align:center">0.0022</td>
+<td style="text-align:center">0.9054</td>
+<td style="text-align:center">0.8054</td>
 </tr>
 </tbody>
 </table>
@@ -912,24 +917,24 @@ F1 score for test set: 0.7586.
 <tbody>
 <tr>
 <td style="text-align:center">100</td>
-<td style="text-align:center">0.0898</td>
-<td style="text-align:center">0.0050</td>
-<td style="text-align:center">0.9538</td>
-<td style="text-align:center">0.7200</td>
+<td style="text-align:center">0.1652</td>
+<td style="text-align:center">0.0061</td>
+<td style="text-align:center">0.9788</td>
+<td style="text-align:center">0.7424</td>
 </tr>
 <tr>
 <td style="text-align:center">200</td>
-<td style="text-align:center">0.1001</td>
-<td style="text-align:center">0.0049</td>
-<td style="text-align:center">0.8826</td>
-<td style="text-align:center">0.8058</td>
+<td style="text-align:center">0.1324</td>
+<td style="text-align:center">0.0047</td>
+<td style="text-align:center">0.8897</td>
+<td style="text-align:center">0.7164</td>
 </tr>
 <tr>
 <td style="text-align:center">300</td>
-<td style="text-align:center">0.0909</td>
-<td style="text-align:center">0.0049</td>
-<td style="text-align:center">0.8688</td>
-<td style="text-align:center">0.7794</td>
+<td style="text-align:center">0.0904</td>
+<td style="text-align:center">0.0043</td>
+<td style="text-align:center">0.8794</td>
+<td style="text-align:center">0.7400</td>
 </tr>
 </tbody>
 </table>
@@ -995,7 +1000,7 @@ As we can see all the three models have performed equally good on the basis of F
 <p><strong>Answer: </strong>
 A SVM is a type of linear separator. Suppose we want to split black circles from the red ones in a X-Y graph by drawing a line. Generally there'd be infinite number of lines that will accomplish this task. SVMs, in particular, find the "maximum-margin" line - this is the line "in the middle". Intuitively, this works well because it allows for noise and is most tolerant to mistakes on either side.</p>
 <p>That's all a (binary) SVM really is. We draw a straight line through our data down the middle to separate it into two classes. But what if we don't want a straight line but a curved one? We achieve this not by drawing curves, but by "lifting" the features we observe into higher dimensions. For example, if we can't draw a line in the space (x1, x2) then we may try adding a third dimension, (x1, x2, x1 * x2). If we project the "line" (actually called a "hyperplane") in this higher dimension down to our original dimension, it looks like a curve.</p>
-<p>So using SVM, we're able to predict whether the student is going to pass the graduation or needs intervention on the basis of his current performance data we have.</p>
+<p>So using SVM, we're able to predict whether the student is going to pass the graduation or needs intervention on the basis of his current performance data we have. Also, as the SVM can handle a lot of features, so in future if we collect more information features about student performance, our model can easily accomodate them and improve if those features provide any useful information.</p>
 
 </div>
 </div>
@@ -1026,7 +1031,7 @@ A SVM is a type of linear separator. Suppose we want to split black circles from
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import &#39;GridSearchCV&#39; and &#39;make_scorer&#39;</span>
@@ -1052,20 +1057,21 @@ A SVM is a type of linear separator. Suppose we want to split black circles from
     <span class="n">score</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span><span class="n">pos_label</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">score</span>
 
+<span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">StratifiedShuffleSplit</span>
+
 <span class="c1"># TODO: Make an f1 scoring function using &#39;make_scorer&#39; </span>
 <span class="n">f1_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">performance_metric</span><span class="p">)</span>
 
 <span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;C&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
-    <span class="s1">&#39;gamma&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">0.001</span><span class="p">],</span>
-    <span class="s1">&#39;degree&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
-    <span class="s1">&#39;kernel&#39;</span><span class="p">:[</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span>
+    <span class="s1">&#39;gamma&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">0.0001</span><span class="p">],</span>
+    <span class="s1">&#39;kernel&#39;</span><span class="p">:[</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span><span class="s1">&#39;linear&#39;</span><span class="p">]</span>
 <span class="p">}</span>
 
-
+<span class="n">ssscv</span> <span class="o">=</span> <span class="n">StratifiedShuffleSplit</span><span class="p">(</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1"># TODO: Perform grid search on the classifier using the f1_scorer as the scoring method</span>
-<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">scoring</span> <span class="o">=</span> <span class="n">f1_scorer</span><span class="p">)</span>
+<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">scoring</span> <span class="o">=</span> <span class="n">f1_scorer</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">ssscv</span><span class="p">)</span>
 
 <span class="c1"># TODO: Fit the grid search object to the training data and find the optimal parameters</span>
 <span class="k">print</span> <span class="s1">&#39;Fitting data&#39;</span>
@@ -1092,11 +1098,11 @@ A SVM is a type of linear separator. Suppose we want to split black circles from
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Start
 Fitting data
-{&apos;kernel&apos;: &apos;rbf&apos;, &apos;C&apos;: 10, &apos;gamma&apos;: 0.001, &apos;degree&apos;: 1}
+{&apos;kernel&apos;: &apos;rbf&apos;, &apos;C&apos;: 10, &apos;gamma&apos;: 0.001}
 Made predictions in 0.0054 seconds.
-Tuned model has a training F1 score of 0.8434.
-Made predictions in 0.0018 seconds.
-Tuned model has a testing F1 score of 0.7862.
+Tuned model has a training F1 score of 0.8480.
+Made predictions in 0.0017 seconds.
+Tuned model has a testing F1 score of 0.8212.
 </pre>
 </div>
 </div>
@@ -1121,8 +1127,8 @@ Tuned model has a testing F1 score of 0.7862.
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-Tuned model has a training F1 score of 0.8434.
-Tuned model has a testing F1 score of 0.7862.</p>
+Tuned model has a training F1 score of 0.8480.
+Tuned model has a testing F1 score of 0.8212.</p>
 <p>There has been a slight improvement in the testing F1 score and the gap b/w training and testing F1 score has also decreased.</p>
 
 </div>
