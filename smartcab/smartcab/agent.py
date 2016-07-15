@@ -126,19 +126,25 @@ def comprehensive_test():
         for alpha in alphas:
             for gamma in gammas:
                 for epsilon in epsilons:
-                    a.alpha = alpha
-                    a.gamma = gamma
-                    a.epsilon = epsilon
-                    sim = Simulator(e, update_delay=0.0001, display=False)
-                    sim.run(n_trials=100)
-                    results[(alpha,gamma,epsilon)] = a.total_reward/a.counts
-
+                	penalties_count_before_trials = a.penalties.count(1)
+                   	a.alpha = alpha
+                   	a.gamma = gamma
+                   	a.epsilon = epsilon
+                   	sim = Simulator(e, update_delay=0.0001, display=False)
+                   	sim.run(n_trials=100)
+                   	penalties_count_after_trials = a.penalties.count(1) - penalties_count_before_trials
+                   	results[(alpha,gamma,epsilon)] = {'ratio' : a.total_reward/a.counts,
+                   									   'penalties' : penalties_count_after_trials
+                   									   }
         x,y,z =  max(results.iteritems(), key=operator.itemgetter(1))[0]
         best_choice_alpha.append(x)
         best_choice_gamma.append(y)
         best_choice_epsilon.append(z)
+    print results
+    sorted_reults = sorted(results.items(), key=lambda x: x[1]['penalties'], reverse=True)
+    print sorted_reults
     best_choice = (max(set(best_choice_alpha), key=best_choice_alpha.count), max(set(best_choice_gamma), key=best_choice_gamma.count), max(set(best_choice_epsilon), key=best_choice_epsilon.count))
     print "This the best choice", best_choice
     #comes out to be (0.9,0.5,0.1)
 if __name__ == '__main__':
-   run()
+   comprehensive_test()
